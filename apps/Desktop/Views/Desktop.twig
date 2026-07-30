@@ -216,14 +216,19 @@
                     <div class="notification-list">
                       {% for notification in viewParams.latestNotifications %}
                         <a href="{{ config.projectUrl }}/notifications?recordId={{ notification.id }}">
-                          <div>
-                            <span class="notification-date">{{hubleto.locale().formatDateShort( notification.datetime_sent )}}</span>
-                            <span class="truncate block w-full notification-subject">{{ notification.subject }}</span>
+                          <div class="notification-item">
+                            <div class="notification-info">
+                              <span class="notification-date">{{hubleto.locale().formatDateShort( notification.datetime_sent )}}</span>
+                              <span class="truncate block w-full notification-subject">{{ notification.subject }}</span>
+                            </div>
+                            <div class="notification-button">
+                              <span class="icon"><i class="fas fa-arrow-right"></i></span>
+                            </div>
                           </div>
                         </a>
                       {% endfor %}
                       <a href="{{ config.projectUrl }}/notifications">
-                        <div class="open-all">
+                        <div class="notification-item open-all">
                           <span>{{ translate('Open all notifications') }}</span>
                         </div>
                       </a>
@@ -232,11 +237,11 @@
                 {% else %}
                   <div class="notification-menu">
                     <div class="notification-list">
-                      <div class="no-new">
+                      <div class="notification-item no-new">
                         <span>{{ translate('No new notifications') }}</span>
                       </div>
                       <a href="{{ config.projectUrl }}/notifications">
-                        <div class="open-all">
+                        <div class="notification-item open-all">
                           <span>{{ translate('Open all notifications') }}</span>
                         </div>
                       </a>
