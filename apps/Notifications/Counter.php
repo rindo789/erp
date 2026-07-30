@@ -2,6 +2,7 @@
 
 namespace Hubleto\App\Community\Notifications;
 
+use Hubleto\App\Community\Notifications\Models\Notification;
 use Hubleto\Erp\Core;
 
 class Counter extends Core
@@ -11,7 +12,7 @@ class Counter extends Core
    * [Description for myUnread]
    *
    * @return int
-   * 
+   *
    */
   public function myUnread(): int
   {
@@ -27,7 +28,7 @@ class Counter extends Core
    * [Description for myRead]
    *
    * @return int
-   * 
+   *
    */
   public function myRead(): int
   {
@@ -43,7 +44,7 @@ class Counter extends Core
    * [Description for myAll]
    *
    * @return int
-   * 
+   *
    */
   public function myAll(): int
   {
@@ -52,6 +53,23 @@ class Counter extends Core
       ->where('id_to', $this->authProvider()->getUserId())
       ->count()
     ;
+  }
+
+  /**
+   * Returns five latest notifications with id, subject and date send
+   *
+   * @return array
+   */
+  public function getLatest(): array{
+    $mNotification = $this->getModel(Notification::class);
+    $notifications = $mNotification->record
+    ->select("id", "subject", "datetime_sent")
+    ->orderBy("datetime_sent", "desc")
+    ->take(5)
+    ->get()
+    ?->toArray();
+
+    return $notifications;
   }
 
   /**
@@ -64,9 +82,9 @@ class Counter extends Core
    * @param string $body
    * @param string $color
    * @param int $priority
-   * 
+   *
    * @return array
-   * 
+   *
    */
   public function send(
     int $category,

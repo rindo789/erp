@@ -76,7 +76,7 @@
       :root { --color-primary: {{ user.DEFAULT_COMPANY.brand_color_primary }} !important; }
     </style>
   {% endif %}
-  
+
 </head>
 
 {{ config.gaTag|raw }}
@@ -199,18 +199,51 @@
             </li>
           {% endif %}
           {% if hubleto.appManager().isAppInstalled('Hubleto\\App\\Community\\Notifications') %}
-            <li class="mr-2 hidden md:block">
+            <li class="mr-2 md:block notification-bell">
               {% if viewParams.unreadNotifications > 0 %}
-                <div style="position:relative;width:0;height:0;top:-0.5em;left:1.5em">
+                <div class="notification-counter" style="position:relative;width:0;height:0;top:-0.5em;left:1.5em">
                   <div class="badge badge-yellow px-1">{{ viewParams.unreadNotifications }}</div>
                 </div>
               {% endif %}
-              <a
+              <div
                 class="btn btn-transparent {% if viewParams.unreadNotifications > 0 %} btn-warning {% endif %}"
-                href="{{ config.projectUrl }}/notifications"
               >
                 <span class="icon"><i class="fas fa-bell"></i></span>
-              </a>
+              </div>
+              <div class="notification-dropdown">
+                {% if viewParams.unreadNotifications > 0 %}
+                  <div class="notification-menu">
+                    <div class="notification-list">
+                      {% for notification in viewParams.latestNotifications %}
+                        <a href="{{ config.projectUrl }}/notifications?recordId={{ notification.id }}">
+                          <div>
+                            <span class="notification-date">{{hubleto.locale().formatDateShort( notification.datetime_sent )}}</span>
+                            <span class="truncate block w-full notification-subject">{{ notification.subject }}</span>
+                          </div>
+                        </a>
+                      {% endfor %}
+                      <a href="{{ config.projectUrl }}/notifications">
+                        <div class="open-all">
+                          <span>{{ translate('Open all notifications') }}</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                {% else %}
+                  <div class="notification-menu">
+                    <div class="notification-list">
+                      <div class="no-new">
+                        <span>{{ translate('No new notifications') }}</span>
+                      </div>
+                      <a href="{{ config.projectUrl }}/notifications">
+                        <div class="open-all">
+                          <span>{{ translate('Open all notifications') }}</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
             </li>
           {% endif %}
           <li class="mr-2 block">

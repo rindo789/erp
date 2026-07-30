@@ -38,7 +38,7 @@ class Desktop extends \Hubleto\Erp\Controller
     $sidebarGroupsCollapsed = $this->config()->getAsJson('sidebarGroupsCollapsed') ?? [];
     foreach ($sidebarGroups as $gUrlSlug => $gData) {
       $sidebarGroups[$gUrlSlug]['isCollapsed'] = $sidebarGroupsCollapsed[$gUrlSlug] ?? false;
-    } 
+    }
 
     $this->viewParams['appsInSidebar'] = $appsInSidebar;
     $this->viewParams['activatedApp'] = $activatedApp;
@@ -48,6 +48,7 @@ class Desktop extends \Hubleto\Erp\Controller
     $this->viewParams['release'] = \Composer\InstalledVersions::getPrettyVersion('hubleto/erp');
 
     $notificationsCounter = $this->getService(Counter::class);
+    $this->viewParams['latestNotifications'] = $notificationsCounter->getLatest();
     $this->viewParams['unreadNotifications'] = $notificationsCounter->myUnread();
 
     $this->viewParams['availableLanguages'] = $this->locale()->getAvailableLanguages();
