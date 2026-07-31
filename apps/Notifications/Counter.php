@@ -60,10 +60,11 @@ class Counter extends Core
    *
    * @return array
    */
-  public function getLatest(): array{
+  public function getLatest(): array {
     $mNotification = $this->getModel(Notification::class);
     $notifications = $mNotification->record
     ->select("id", "subject", "datetime_sent")
+    ->whereNull("datetime_read")
     ->orderBy("datetime_sent", "desc")
     ->take(5)
     ->get()
